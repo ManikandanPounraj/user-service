@@ -32,7 +32,7 @@ class UserControllerTest {
 
         when(userService.createUser(input)).thenReturn(created);
 
-        ResponseEntity<User> response = userController.create(input);
+        ResponseEntity<User> response = userController.createUser(input);
         assertEquals(200, response.getStatusCodeValue());
         assertEquals("Alice", response.getBody().getName());
     }
@@ -45,7 +45,7 @@ class UserControllerTest {
         );
         when(userService.getAllUsers()).thenReturn(users);
 
-        ResponseEntity<List<User>> response = userController.getAll();
+        ResponseEntity<List<User>> response = userController.getAllUsers();
         assertEquals(2, response.getBody().size());
     }
 
@@ -54,14 +54,14 @@ class UserControllerTest {
         User user = new User(1L, "C", "c@mail.com");
         when(userService.getUser(1L)).thenReturn(user);
 
-        ResponseEntity<User> response = userController.get(1L);
+        ResponseEntity<User> response = userController.getUserDetails(1L);
         assertEquals("C", response.getBody().getName());
     }
 
     @Test
     void testGetUserById_NotFound() {
         when(userService.getUser(10L)).thenThrow(new NoSuchElementException("User not found"));
-        assertThrows(NoSuchElementException.class, () -> userController.get(10L));
+        assertThrows(NoSuchElementException.class, () -> userController.getUserDetails(10L));
     }
 
     @Test
@@ -69,7 +69,7 @@ class UserControllerTest {
         User updated = new User(1L, "Updated", "updated@mail.com");
         when(userService.updateUser(eq(1L), any())).thenReturn(updated);
 
-        ResponseEntity<User> response = userController.update(1L, updated);
+        ResponseEntity<User> response = userController.updateUser(1L, updated);
         assertEquals("Updated", response.getBody().getName());
     }
 
